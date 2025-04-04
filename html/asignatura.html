@@ -9,69 +9,79 @@
 </head>
 
 <body class="bg-light">
-
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Asignaturas</h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAsignatura">➕ Nueva
-                Asignatura</button>
+            <h1 class="h4">Asignaturas</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                ➕ Nueva Asignatura
+            </button>
         </div>
 
-        <div id="asignaturas-list" class="row">
-            <!-- Contenedor donde se insertan las cards -->
-            <div id="contenedorAsignaturas" class="row g-4 mt-4"></div>
-
-            <!-- Template para las cards -->
-            <template id="templateAsignatura">
-                <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title codigo">CÓDIGO</h5>
-                            <p class="card-text nombre">Nombre de la asignatura</p>
-                            <p class="card-text creditos">Créditos: X</p>
-                            <button class="btn btn-primary btn-editar">✏️ Editar</button>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-        </div>
+        <div class="row" id="contenedorAsignaturas"></div>
     </div>
 
-    <!-- Modal para registrar/editar asignatura -->
-    <div class="modal fade" id="modalAsignatura" tabindex="-1" aria-hidden="true">
+    <!-- Template -->
+    <template id="templateAsignatura">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title nombre"></h5>
+                    <p class="card-text">
+                        Código: <span class="codigo"></span><br>
+                        <span class="creditos"></span>
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-primary btn-editar">✏️ Editar</button>
+                        <button class="btn btn-sm btn-outline-success" onclick="">👨‍🎓 Ver alumnos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal Agregar -->
+    <div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <form class="modal-content" id="formAsignatura">
+            <form class="modal-content" id="formNuevaAsignatura">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Nueva Asignatura</h5>
+                    <h5 class="modal-title">Agregar Asignatura</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="modo" value="crear" />
-                    <div class="mb-3">
-                        <label for="codigo" class="form-label">Código</label>
-                        <input type="text" class="form-control" id="codigo" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="creditos" class="form-label">Créditos</label>
-                        <input type="number" class="form-control" id="creditos" required min="1" />
-                    </div>
+                    <input required type="text" class="form-control mb-2" id="codigo" placeholder="Código">
+                    <input required type="text" class="form-control mb-2" id="nombre" placeholder="Nombre">
+                    <input required type="number" class="form-control mb-2" id="creditos" placeholder="Créditos">
+                    <input required type="tetx" class="form-control mb-2" id="descripcion" placeholder="descripcion">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Bootstrap JS + Tu script -->
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" id="formEditarAsignatura">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Asignatura</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input readonly type="text" class="form-control mb-2" id="edit-codigo">
+                    <input required type="text" class="form-control mb-2" id="edit-nombre">
+                    <input required type="number" class="form-control mb-2" id="edit-creditos">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/api.js"></script>
+    <script type="module" src="/js/api.js"></script>
     <script src="/js/app.js"></script>
 </body>
 
