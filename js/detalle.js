@@ -46,16 +46,14 @@ async function mostrarAlumnos(codigo) {
     const lista = document.getElementById("listaAlumnos");
     lista.innerHTML = "";
 
-    matriculas.forEach(({ alumno }) => {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between align-items-center";
-        li.innerHTML = `
-            <div>
-                <strong>${alumno.nombre}</strong><br>
-                <small class="text-muted">Código: ${alumno.codigo}</small>
-            </div>
+    matriculas.forEach(({ alumno }, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${alumno.nombre}</td>
+          <td>${alumno.codigo}</td>
         `;
-        lista.appendChild(li);
-    });
+        lista.appendChild(row);
+      });
     document.getElementById("totalAlumnos").textContent = `Total inscritos: ${matriculas.length}`;
 }
