@@ -7,12 +7,14 @@
 </head>
 <body class="bg-light">
   <div class="container py-4">
-    <a href="index.html" class="btn btn-link mb-3">⬅ Volver</a>
+    <a href="asignatura.html" class="btn btn-link mb-3">⬅ Volver</a>
     <h1 id="tituloAsignatura" class="h4"></h1>
     <p id="infoAsignatura" class="text-muted"></p>
+    <p id="totalAlumnos"></p>
 
     <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
       <h2 class="h5">Alumnos inscritos</h2>
+      <ul class="list-group" id="listaAlumnos"></ul>
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregarAlumno">
         ➕ Agregar Alumno
       </button>
@@ -41,6 +43,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="detalle.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/detalle.js"></script>
 </body>
 </html>

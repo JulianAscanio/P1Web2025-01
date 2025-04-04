@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             alert("No se pudo editar la asignatura");
         }
+
     });
 
 });
@@ -65,6 +66,12 @@ async function mostrarAsignaturas() {
 
         clone.querySelector(".btn-editar").addEventListener("click", () => {
             abrirEditar(asig.codigo, asig.nombre, asig.creditos, asig.descripcion);
+        });
+
+        // Botón Ver alumnos
+        const btnVerAlumnos = clone.querySelector("button.btn-outline-success");
+        btnVerAlumnos.addEventListener("click", () => {
+            window.location.href = `detalle.html?codigo=${asig.codigo}`;
         });
 
         contenedor.appendChild(clone);

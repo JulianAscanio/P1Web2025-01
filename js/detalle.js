@@ -1,57 +1,61 @@
-import { obtenerAsignatura, obtenerAlumnosDeAsignatura, agregarAlumnoAAsignatura } from "./api.js";
+const params = new URLSearchParams(window.location.search);
+const codigoAsignatura = params.get("codigo");
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const params = new URLSearchParams(window.location.search);
-  const codigo = params.get("codigo");
-  if (!codigo) {
-    alert("Código no encontrado");
-    location.href = "index.html";
-    return;
-  }
+    const codigo = new URLSearchParams(location.search).get("codigo");
+    if (!codigo) return;
 
-  const asignatura = await obtenerAsignatura(codigo);
-  document.getElementById("tituloAsignatura").textContent = `${asignatura.nombre}`;
-  document.getElementById("infoAsignatura").textContent = `Código: ${asignatura.codigo} | Créditos: ${asignatura.creditos}`;
+    const asignatura = await api.obtenerAsignaturaPorCodigo(codigo);
 
-  await cargarAlumnos(codigo);
+    document.getElementById("tituloAsignatura").textContent = asignatura.nombre;
+    document.getElementById("infoAsignatura").textContent = `Código: ${asignatura.codigo} - Créditos: ${asignatura.creditos}`;
 
-  document.getElementById("formAgregarAlumno").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const codAlumno = document.getElementById("codigoAlumno").value.trim();
-    const nomAlumno = document.getElementById("nombreAlumno").value.trim();
+    mostrarAlumnos(codigo);
 
-    const alumnosActuales = await obtenerAlumnosDeAsignatura(codigo);
-    if (alumnosActuales.length >= 3) {
-      alert("Máximo 3 alumnos por asignatura");
-      return;
-    }
+    document.getElementById("formAgregarAlumno").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const codigoAlumno = document.getElementById("codigoAlumno").value.trim();
+        const nombreAlumno = document.getElementById("nombreAlumno").value.trim();
 
-    if (alumnosActuales.find(a => a.codigo_alumno === codAlumno)) {
-      alert("El alumno ya está inscrito");
-      return;
-    }
+        const matriculas = await api.obtenerMatriculasDeAsignatura(codigo);
 
-    await agregarAlumnoAAsignatura(codigo, codAlumno, nomAlumno);
-    alert("Alumno agregado");
-    e.target.reset();
-    bootstrap.Modal.getInstance(document.getElementById("modalAgregarAlumno")).hide();
-    await cargarAlumnos(codigo);
-  });
+        // Validar máximo 3 alumnos
+        if (matriculas.length >= 3) {
+            alert("Ya hay 3 alumnos matriculados en esta asignatura.");
+            return;
+        }
+
+        // Validar que no esté repetido
+        const yaInscrito = matriculas.find(m => m.codigo_alumno === codigoAlumno);
+        if (yaInscrito) {
+            alert("Este alumno ya está inscrito en esta asignatura.");
+            return;
+        }
+
+        await api.crearAlumnoSiNoExiste(codigoAlumno, nombreAlumno);
+        await api.matricularAlumno(codigoAlumno, codigo);
+
+        e.target.reset();
+        bootstrap.Modal.getInstance(document.getElementById("modalAgregarAlumno")).hide();
+        mostrarAlumnos(codigo);
+    });
 });
 
-async function cargarAlumnos(codigo) {
-  const lista = document.getElementById("listaAlumnos");
-  lista.innerHTML = "";
-  const alumnos = await obtenerAlumnosDeAsignatura(codigo);
-  if (alumnos.length === 0) {
-    lista.innerHTML = `<li class="list-group-item text-muted">No hay alumnos inscritos</li>`;
-    return;
-  }
+async function mostrarAlumnos(codigo) {
+    const matriculas = await api.obtenerAlumnosPorAsignatura(codigo);
+    const lista = document.getElementById("listaAlumnos");
+    lista.innerHTML = "";
 
-  alumnos.forEach(al => {
-    const li = document.createElement("li");
-    li.className = "list-group-item";
-    li.textContent = `${al.nombre_alumno} (${al.codigo_alumno})`;
-    lista.appendChild(li);
-  });
+    matriculas.forEach(({ alumno }) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            <div>
+                <strong>${alumno.nombre}</strong><br>
+                <small class="text-muted">Código: ${alumno.codigo}</small>
+            </div>
+        `;
+        lista.appendChild(li);
+    });
+    document.getElementById("totalAlumnos").textContent = `Total inscritos: ${matriculas.length}`;
 }
