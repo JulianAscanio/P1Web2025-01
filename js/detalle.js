@@ -5,10 +5,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const codigo = new URLSearchParams(location.search).get("codigo");
     if (!codigo) return;
 
-    const asignatura = await api.obtenerAsignaturaPorCodigo(codigo);
+    const resultado = await api.obtenerAsignaturaPorCodigo(codigo);
+    const asignatura = resultado[0];
 
-    document.getElementById("tituloAsignatura").textContent = asignatura.nombre;
-    document.getElementById("infoAsignatura").textContent = `Código: ${asignatura.codigo} - Créditos: ${asignatura.creditos}`;
+    if (asignatura) {
+        document.getElementById("tituloAsignatura").textContent = asignatura.nombre;
+        document.getElementById("infoAsignatura").textContent = `Código: ${asignatura.codigo} - Créditos: ${asignatura.creditos}`;
+    } else {
+        document.getElementById("tituloAsignatura").textContent = "Asignatura no encontrada";
+        document.getElementById("infoAsignatura").textContent = "";
+    }
 
     mostrarAlumnos(codigo);
 
@@ -54,6 +60,6 @@ async function mostrarAlumnos(codigo) {
           <td>${alumno.codigo}</td>
         `;
         lista.appendChild(row);
-      });
+    });
     document.getElementById("totalAlumnos").textContent = `Total inscritos: ${matriculas.length}`;
 }
