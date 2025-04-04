@@ -39,7 +39,7 @@
             </div>
         </div>
     </template>
-    
+
 
     <!-- Modal Agregar -->
     <div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
@@ -53,7 +53,7 @@
                     <input required type="text" class="form-control mb-2" id="codigo" placeholder="Código">
                     <input required type="text" class="form-control mb-2" id="nombre" placeholder="Nombre">
                     <input required type="number" class="form-control mb-2" id="creditos" placeholder="Créditos">
-                    <input required type="tetx" class="form-control mb-2" id="descripcion" placeholder="descripcion">
+                    <textarea class="form-control mb-2" id="descripcion" placeholder="Descripción"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Guardar</button>
@@ -71,9 +71,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <input readonly type="text" class="form-control mb-2" id="edit-codigo">
-                    <input required type="text" class="form-control mb-2" id="edit-nombre">
-                    <input required type="number" class="form-control mb-2" id="edit-creditos">
+                    <input readonly type="text" class="form-control mb-2" id="codigoEditar" placeholder="Código">
+                    <input required type="text" class="form-control mb-2" id="nombreEditar" placeholder="Nombre">
+                    <input required type="number" class="form-control mb-2" id="creditosEditar" placeholder="Créditos">
+                    <textarea class="form-control mb-2" id="descripcionEditar" placeholder="Descripción"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Actualizar</button>
@@ -81,6 +82,7 @@
             </form>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/api.js"></script>
